@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<project name="Web" basedir="." default="build">
+   <property name="src.dir" value="src"/>
+   <property name="web.dir" value="build"/>
+   <property name="build.dir" value="${web.dir}/classes"/>
+   <property name="name" value="web"/>
+   <property name="webcontent"  location="WebContent"/>
+
+   <path id="master-classpath">
+      <fileset dir="${web.dir}/WEB-INF/lib">
+         <include name="**/*.jar"/>
+      </fileset>
+	  <pathelement path="${build.dir}"/>
+   </path>
+
+   <target name="init" description="initialize the folder and libraries">
+	   <copy toDir="${web.dir}" >
+	   		<fileset file="${webcontent}/WEB-INF" >
+	   			<include name="**" />
+	   			<exclude name="*.zip" />
+	   		</fileset>
+	   </copy>	
+<!--   	   <copy file="${webcontent}/demo.zip" tofile="${web.dir}/WEB-INF/demo.zip" overwrite="true" /> -->
+   	</target>
+
+   <target name="build" description="Compile source tree java files">
+      <mkdir dir="${build.dir}"/>
+<!--   	<copy file="${src.dir}/DBInfo.properties" tofile="${web.dir}/classes/DBInfo.properties" overwrite="true" /> -->
+    <javac srcdir="${src.dir}" includeantruntime="false" destdir="${build.dir}" source="1.8" target="1.8">
+     <classpath refid="master-classpath"/> 
+    </javac>
+   </target>
+	
+   	<target name="war" depends="build" description="generate war" >		
+   		<war destfile = "IR.war" webxml = "${web.dir}/WEB-INF/web.xml">
+   		   <fileset dir = "${web.dir}">
+   		      <include name = "**/*.*"/>
+   		   	  <exclude name="**/${build.dir}/**" />
+   		   </fileset>   
+   			<classes dir = "${build.dir}" includes="**/*.class, DBInfo.properties" />
+   		</war>
+	</target>
+	
+	
+    <target name="clean" description="Clean output directories">
+      <delete dir="${web.dir}" />
+    </target>
+	
+	<target name="buildAll" description="clean, build, import libraries and generate war" 
+		depends="clean,init,build,war" />
+	
+</project>

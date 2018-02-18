@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.col-mt.com/MsgService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MsgService" targetNamespace="http://www.col-mt.com/MsgService/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.col-mt.com/MsgService/">
+      <xsd:element name="retrieveParam">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getUserParam">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getUser">
+    <wsdl:part element="tns:retrieveParam" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="getUserParam">
+    <wsdl:part element="tns:getUserParam" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="MsgService">
+    <wsdl:operation name="getUserInfo">
+      <wsdl:input message="tns:getUser"/>
+      <wsdl:output message="tns:getUserParam"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MsgServiceSOAP" type="tns:MsgService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getUserInfo">
+      <soap:operation soapAction="http://www.col-mt.com/MsgService/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MsgService">
+    <wsdl:port binding="tns:MsgServiceSOAP" name="MsgServiceSOAP">
+      <soap:address location="www.col-mt.com/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
