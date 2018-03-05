@@ -4,6 +4,7 @@ Report generator based on online applications.
 <h1> Pre-Task </h1>
 
 ensure database is presistant, check the following if it has been completed.
+
  `select sys_context('USERENV', 'SID') from dual;`
 
  `select * from v$version;`
